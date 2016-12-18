@@ -7,6 +7,7 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\utils\Utils;
+use pocketmine\utils\Config;
 use pocketmine\plugin\Plugin;
 use pocketmine\Server;
 use pocketmine\plugin\PluginDescription;
@@ -17,19 +18,22 @@ class infomcpe extends PluginBase{
 	}
 
 	public function onEnable(){
+		$this->saveDefaultConfig();
     }
 
 	public function onDisable(){
 	}
 
 	public function onCommand(CommandSender $sender, Command $command, $label, array $args){
+		
 		switch($command->getName()){
-            	
+         
       case "infomcpe":
 if(count($args) == 0){
-$sender->sendMessage("§9§l—————§eINFOMCPE.RU§9—————\n§6/infomcpe download - §fскачать плагин \n§6/infomcpe pluginlist - §fсписок установленых плагинов\n§6/infomcpe update - §fкриво работуюший autoupdater \n§9§l—————§eINFOMCPE.RU§9—————");
+$sender->sendMessage("§9§l—————§eINFOMCPE.RU§9—————\n§6/infomcpe download - §f{$this->lang("download")} {$this->lang("plugin")} \n§6/infomcpe pluginlist - §f{$this->lang("listinstall")} {$this->lang("plugins")}\n§6/infomcpe update - §f {$this->lang("autoupdater")}\n§9§l—————§eINFOMCPE.RU§9—————");
 }
 error_reporting(0);
+
       switch($args [0]){
      
       case "download":
@@ -45,10 +49,10 @@ error_reporting(0);
       if($file){
         $this->download($this->getServer()->getPluginPath() . "[INFOMCPE.RU]{$args[1]} v{$version}.phar", $file);
         }else{
-            $sender->sendMessage("Ошибка");	
+            $sender->sendMessage($this->lang("error"));	
         	}
         }else{
-		$sender->sendMessage("§4Не достаточно прав");
+		$sender->sendMessage($this->lang("noperm"));
 		}
      break;
      case "pluginlist":
@@ -57,14 +61,14 @@ error_reporting(0);
                              $sender->sendMessage("{$plugin->getName()} v{$plugin->getDescription()->getVersion()}");
                         } 
 	      }else{
-		$sender->sendMessage("§4Не достаточно прав");
+		$sender->sendMessage($this->lang("noperm"));
 		}
      break;
      case "update":
      if($sender->hasPermission("infomcpe.update")){
      $this->autoupdate($sender);
      }else{
-     	$sender->sendMessage("§4Не достаточно прав");
+     	$sender->sendMessage($this->lang("noperm"));
      	}
      break;
      
@@ -85,9 +89,9 @@ public function autoupdate($player){
 		}
 		}
 		if($count <10 && $count > 3){
-		$player->sendMessage("Обновлено {$count} плагинов");
-		}else{
-			$player->sendMessage("Обновлено {$count} плагинa");
+		$player->sendMessage("{$this->lang("updated")} {$count} {$this->lang("plugins")}");
+		} elseif($count == 0){
+			$player->sendMessage($this->lang("noupdate"));
 			}
 	}
 public function download($path, $file){
@@ -97,4 +101,10 @@ public function download($path, $file){
        $loader->enablePlugin($pl);
 	
 	}
+	public function lang($phrase){
+		$lang = $this->getConfig()->get("lang");
+        $urlh = file_get_contents("http://infomcpe.ru/localizer.php?lang={$lang}"); 
+        $url = json_decode($urlh, true); 
+        return $url["{$phrase}"];
+		}
 }
