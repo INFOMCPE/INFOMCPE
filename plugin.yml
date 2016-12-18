@@ -10,3 +10,13 @@ commands:
     default: true
     description: INFOMCPE.RU
     aliases: [im]
+permissions:
+  infomcpe.download:
+    description: Разрешение скачивать плагины
+    default: op
+  infomcpe.pluginlist:
+    description: Разрешение просматривать плагины
+    default: op
+  infomcpe.update:
+    description: Разрешение обновлять плагины
+    default: op
