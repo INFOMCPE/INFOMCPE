@@ -1,0 +1,12 @@
+name: INFOMCPE
+main: opkiler22789\infomcpe
+author: opkiler22789
+version: 1.0
+api: [2.0.0]
+load: STARTUP
+website: infomcpe.ru
+commands:
+  infomcpe:
+    default: true
+    description: INFOMCPE.RU
+    aliases: [im]
