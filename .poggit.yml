@@ -3,5 +3,6 @@ branches:
 - master
 projects:
   INFOMCPE:
-    path: ""
+  icon: http://infomcpe.ru/favicon.png
+  path: ""
 ...
