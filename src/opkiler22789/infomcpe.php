@@ -84,6 +84,59 @@ public function autoupdate($player){
 			}
 		}
 		}
+		if($count <10 && $count > 3){
+		$player->sendMessage("Обновлено {$count} плагинов");
+		}else{
+			$player->sendMessage("Обновлено {$count} плагинa{");
+			}
+	}
+public function download($path, $file){
+	   file_put_contents($path, $file);
+        $loader = new \pocketmine\plugin\PharPluginLoader($this->getServer());
+       $pl = $loader->loadPlugin($path);
+       $loader->enablePlugin($pl);
+	}
+	
+}
+            $sender->sendMessage("Ошибка");	
+        	}
+        }else{
+		$sender->sendMessage("§4Не достаточно прав");
+		}
+     break;
+     case "pluginlist":
+     if($sender->hasPermission("infomcpe.pluginlist")){
+     foreach ($this->getServer()->getPluginManager()->getPlugins() as $plugin) {
+                             $sender->sendMessage("{$plugin->getName()} v{$plugin->getDescription()->getVersion()}");
+                        } 
+	      }else{
+		$sender->sendMessage("§4Не достаточно прав");
+		}
+     break;
+     case "update":
+     if($sender->hasPermission("infomcpe.update")){
+     $this->autoupdate($sender);
+     }else{
+     	$sender->sendMessage("§4Не достаточно прав");
+     	}
+     break;
+     
+	}
+}
+}
+public function autoupdate($player){
+	            $data = json_decode(file_get_contents("http://infomcpe.ru/api.php?action=getResources&category_id=2"), true);
+                $count = 0;
+                foreach($data["resources"] as $resources){
+	            foreach ($this->getServer()->getPluginManager()->getPlugins() as $plugin) {
+		if($resources["title"] == $plugin->getName() && $resources["version_string"] != $plugin->getDescription()->getVersion()){
+			$file = Utils::getURL("http://infomcpe.ru/resources/{$resources['id']}/download?version={$resources['version_id']}");
+			$this->download($this->getServer()->getPluginPath() . "[INFOMCPE.RU]{$resources["title"]} v{$resources["version_string"]}.phar", $file);
+			$count++;
+			
+			}
+		}
+		}
 		if($count =<10 && $count => 3){
 		$player->sendMessage("Обновлено {$count} плагинов");
 		}else{
