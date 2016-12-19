@@ -47,7 +47,7 @@ error_reporting(0);
                 }
                 
       if($file){
-        $this->download($this->getServer()->getPluginPath() . "[INFOMCPE.RU]{$args[1]} v{$version}.phar", $file);
+        $this->install($this->getServer()->getPluginPath() . "[INFOMCPE.RU]{$args[1]} v{$version}.phar", $file);
         }else{
             $sender->sendMessage($this->lang("error"));	
         	}
@@ -82,19 +82,21 @@ public function autoupdate($player){
 	            foreach ($this->getServer()->getPluginManager()->getPlugins() as $plugin) {
 		if($resources["title"] == $plugin->getName() && $resources["version_string"] != $plugin->getDescription()->getVersion()){
 			$file = Utils::getURL("http://infomcpe.ru/resources/{$resources['id']}/download?version={$resources['version_id']}");
-			$this->download($this->getServer()->getPluginPath() . "[INFOMCPE.RU]{$resources["title"]} v{$resources["version_string"]}.phar", $file);
+			$this->install($this->getServer()->getPluginPath() . "[INFOMCPE.RU]{$resources["title"]} v{$resources["version_string"]}.phar", $file);
 			$count++;
 			
 			}
 		}
 		}
-		if($count <10 && $count > 3){
-		$player->sendMessage("{$this->lang("updated")} {$count} {$this->lang("plugins")}");
-		} elseif($count == 0){
-			$player->sendMessage($this->lang("noupdate"));
+		if($count <10 && $count > 2){
+			$player->sendMessage("{$this->lang("updated")} {$count} {$this->lang("plugins")}");
+		}elseif($count == 1){
+			$player->sendMessage("{$this->lang("updated")} {$count} {$this->lang("plugin")}");
+			}elseif($count == 0){
+				$player->sendMessage($this->lang("noupdate"));
 			}
 	}
-public function download($path, $file){
+public function install($path, $file){
 	   file_put_contents($path, $file);
         $loader = new \pocketmine\plugin\PharPluginLoader($this->getServer());
        $pl = $loader->loadPlugin($path);
