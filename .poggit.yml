@@ -1,8 +1,8 @@
 --- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/INFOMCPE/INFOMCPE
 branches:
 - master
-icon: http://infomcpe.ru/favicon.png
 projects:
   INFOMCPE:
-  path: ""
+    path: ""
+    icon: http://infomcpe.ru/favicon.png
 ...
