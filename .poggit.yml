@@ -4,5 +4,5 @@ branches:
 icon: http://infomcpe.ru/favicon.png
 projects:
   INFOMCPE:
-  path: ""
+    path: ""
 ...
